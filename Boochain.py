@@ -16,9 +16,9 @@ dictionary = {} #empty dictionart to hold the count of each word encountered
 #class Chain 
 class Chain(): 
     def __init__(self, words, senses, count = 0):
-	self.words = set(words)
-	self.senses = set(senses)
-	dictionary[words[0]] = 1 #initialize counter
+    	self.words = set(words)
+    	self.senses = set(senses)
+    	dictionary[words[0]] = 1 #initialize counter
 	
     def addWord(self, word):
         
@@ -32,13 +32,13 @@ class Chain():
 
 
     def addSense(self, sense):
-	self.senses.add(sense)
+	   self.senses.add(sense)
 
     def getWords(self):
-	return self.words
+	   return self.words
 
     def getSenses(self):
-	return self.getSenses
+	   return self.getSenses
 
     def incCount(self):
         self.count += 1
