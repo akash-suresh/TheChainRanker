@@ -102,5 +102,15 @@ for chain in lexical_chains:
 	hom = 1 - (dis_word*1.0/chain_length)
 	#print 'Homogeneity =' + str(hom)
 	score = 1.0*chain_length*hom
-	print 'Score =' + str(score)
+	#print 'Score =' + str(score)
 	chain.setScore(score)
+
+print 'Sorted start'
+lexical_chains.sort(key=lambda x: x.score, reverse=True)
+
+for chain in lexical_chains:
+	if(chain.score>0.0):
+		for word in chain.getWords():
+			print str(word + "(" + str(dictionary[word]) + ")") + ',',
+		print 'Score=' + str(chain.score)
+	
