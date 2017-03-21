@@ -15,30 +15,29 @@ dictionary = {} #empty dictionart to hold the count of each word encountered
 
 #class Chain 
 class Chain(): 
-	def __init__(self, words, senses, count = 0):
-		self.words = set(words)
-		self.senses = set(senses)
-		self.score = 0
-		dictionary[words[0]] = 1 #initialize counter
+    def __init__(self, words, senses, count = 0):
+    	self.words = set(words)
+    	self.senses = set(senses)
+    	dictionary[words[0]] = 1 #initialize counter
+	
+    def addWord(self, word):
+        
+        if(len(self.words.intersection([word])) > 0):
+            dictionary[word] += 1
+        else:
+            dictionary[word] = 1
+        
+        self.words.add(word)
+	
 
-	def addWord(self, word):
-	    
-		if(len(self.words.intersection([word])) > 0):
-			dictionary[word] += 1
-		else:
-			dictionary[word] = 1
-	    
-		self.words.add(word)
+    def addSense(self, sense):
+	   self.senses.add(sense)
 
+    def getWords(self):
+	   return self.words
 
-	def addSense(self, sense):
-		self.senses.add(sense)
-
-	def getWords(self):
-		return self.words
-
-	def getSenses(self):
-		return self.getSenses
+    def getSenses(self):
+	   return self.getSenses
 
 	def incCount(self):
 		self.count += 1
