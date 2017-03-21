@@ -16,9 +16,10 @@ dictionary = {} #empty dictionart to hold the count of each word encountered
 #class Chain 
 class Chain(): 
     def __init__(self, words, senses, count = 0):
-	self.words = set(words)
-	self.senses = set(senses)
-	dictionary[words[0]] = 1 #initialize counter
+		self.words = set(words)
+		self.senses = set(senses)
+		self.score = 0
+		dictionary[words[0]] = 1 #initialize counter
 	
     def addWord(self, word):
         
@@ -30,18 +31,20 @@ class Chain():
         self.words.add(word)
 	
 
-
     def addSense(self, sense):
-	self.senses.add(sense)
+		self.senses.add(sense)
 
     def getWords(self):
-	return self.words
+		return self.words
 
     def getSenses(self):
-	return self.getSenses
+		return self.getSenses
 
     def incCount(self):
         self.count += 1
+
+    def setScore(self, sc):
+		self.score = sc
 
 
 
@@ -92,11 +95,12 @@ for chain in lexical_chains:
 	chain_length = 0
 	dis_word = 0
 	for word in chain.getWords():
-		print str(word + "(" + str(dictionary[word]) + ")") + ',',
+		#print str(word + "(" + str(dictionary[word]) + ")") + ',',
 		chain_length = chain_length + dictionary[word]
 		dis_word = dis_word + 1
-	print ''
-	print 'Length =' + str(chain_length)
+	#print 'Length =' + str(chain_length)
 	hom = 1 - (dis_word*1.0/chain_length)
-	print 'Homogeneity =' + str(hom)
-	print 'Score =' + str(1.0*chain_length*hom)
+	#print 'Homogeneity =' + str(hom)
+	score = 1.0*chain_length*hom
+	print 'Score =' + str(score)
+	chain.setScore(score)
