@@ -15,37 +15,44 @@ dictionary = {} #empty dictionart to hold the count of each word encountered
 
 #class Chain 
 class Chain(): 
-    def __init__(self, words, senses, count = 0):
+	def __init__(self, words, senses, count = 0):
 		self.words = set(words)
 		self.senses = set(senses)
 		self.score = 0
 		dictionary[words[0]] = 1 #initialize counter
-	
-    def addWord(self, word):
-        
-        if(len(self.words.intersection([word])) > 0):
-            dictionary[word] += 1
-        else:
-            dictionary[word] = 1
-        
-        self.words.add(word)
-	
 
-    def addSense(self, sense):
+	def addWord(self, word):
+	    
+		if(len(self.words.intersection([word])) > 0):
+			dictionary[word] += 1
+		else:
+			dictionary[word] = 1
+	    
+		self.words.add(word)
+
+
+	def addSense(self, sense):
 		self.senses.add(sense)
 
-    def getWords(self):
+	def getWords(self):
 		return self.words
 
-    def getSenses(self):
+	def getSenses(self):
 		return self.getSenses
 
-    def incCount(self):
-        self.count += 1
+	def incCount(self):
+		self.count += 1
 
-    def setScore(self, sc):
+	def setScore(self, sc):
 		self.score = sc
 
+	def mfword(self):
+		maxfreq = 0
+		for word in self.getWords():
+			if dictionary[word] > maxfreq:
+				maxword = word	
+				maxfreq = dictionary[word]
+		return maxword
 
 
 def add_word(word):
@@ -76,13 +83,18 @@ def add_word(word):
     lexical_chains.append(Chain([word], wn.synsets(word)))
 
 
-fileName = raw_input("Enter file path + name, if file name is 'nlp.txt', type 'nlp' \n \n")
-fileName += ".txt"
+#fileName = raw_input("Enter file path + name, if file name is 'nlp.txt', type 'nlp' \n \n")
+#n = raw_input("Enter number of sentences in summary.\n")
+n = 15
+fileName = "amazon.txt"
 print ("\n\n")
 #fileName = "nlp.txt"
 File = open(fileName) #open file
 lines = File.read() #read all lines
 #dec_lines =  [line.decode('utf-8') for line in lines] 
+
+line_list = lines.split('. ')
+
 
 is_noun = lambda x: True if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS') else False
 nouns = [word for (word, pos) in nltk.pos_tag(nltk.word_tokenize(lines)) if is_noun(pos)]  #extract all nouns
@@ -113,4 +125,24 @@ for chain in lexical_chains:
 		for word in chain.getWords():
 			print str(word + "(" + str(dictionary[word]) + ")") + ',',
 		print 'Score=' + str(chain.score)
-	
+
+summary = []
+line_flags = []
+
+for line in line_list:
+	line_flags.append(0)
+
+for chain in lexical_chains:
+	bigword = chain.mfword()
+	for i in range(len(line_list)):
+		line=line_list[i]
+		if line.find(' '+str(bigword)+' ')!=-1 or line.find(' '+str(bigword)+'.')!=-1:
+			if line_flags[i]==0:
+				summary.append(line)
+				line_flags[i] = 1
+				break
+	if(len(summary)==n):
+		break			
+
+
+print summary
