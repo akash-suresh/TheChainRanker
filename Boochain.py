@@ -30,7 +30,6 @@ class Chain():
         self.words.add(word)
 	
 
-
     def addSense(self, sense):
 	   self.senses.add(sense)
 
@@ -40,9 +39,19 @@ class Chain():
     def getSenses(self):
 	   return self.getSenses
 
-    def incCount(self):
-        self.count += 1
+	def incCount(self):
+		self.count += 1
 
+	def setScore(self, sc):
+		self.score = sc
+
+	def mfword(self):
+		maxfreq = 0
+		for word in self.getWords():
+			if dictionary[word] > maxfreq:
+				maxword = word	
+				maxfreq = dictionary[word]
+		return maxword
 
 
 def add_word(word):
@@ -73,13 +82,18 @@ def add_word(word):
     lexical_chains.append(Chain([word], wn.synsets(word)))
 
 
-fileName = raw_input("Enter file path + name, if file name is 'nlp.txt', type 'nlp' \n \n")
-fileName += ".txt"
+#fileName = raw_input("Enter file path + name, if file name is 'nlp.txt', type 'nlp' \n \n")
+#n = raw_input("Enter number of sentences in summary.\n")
+n = 15
+fileName = "amazon.txt"
 print ("\n\n")
 #fileName = "nlp.txt"
 File = open(fileName) #open file
 lines = File.read() #read all lines
 #dec_lines =  [line.decode('utf-8') for line in lines] 
+
+line_list = lines.split('. ')
+
 
 is_noun = lambda x: True if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS') else False
 nouns = [word for (word, pos) in nltk.pos_tag(nltk.word_tokenize(lines)) if is_noun(pos)]  #extract all nouns
@@ -92,11 +106,42 @@ for chain in lexical_chains:
 	chain_length = 0
 	dis_word = 0
 	for word in chain.getWords():
-		print str(word + "(" + str(dictionary[word]) + ")") + ',',
+		#print str(word + "(" + str(dictionary[word]) + ")") + ',',
 		chain_length = chain_length + dictionary[word]
 		dis_word = dis_word + 1
-	print ''
-	print 'Length =' + str(chain_length)
+	#print 'Length =' + str(chain_length)
 	hom = 1 - (dis_word*1.0/chain_length)
-	print 'Homogeneity =' + str(hom)
-	print 'Score =' + str(1.0*chain_length*hom)
+	#print 'Homogeneity =' + str(hom)
+	score = 1.0*chain_length*hom
+	#print 'Score =' + str(score)
+	chain.setScore(score)
+
+print 'Sorted start'
+lexical_chains.sort(key=lambda x: x.score, reverse=True)
+
+for chain in lexical_chains:
+	if(chain.score>0.0):
+		for word in chain.getWords():
+			print str(word + "(" + str(dictionary[word]) + ")") + ',',
+		print 'Score=' + str(chain.score)
+
+summary = []
+line_flags = []
+
+for line in line_list:
+	line_flags.append(0)
+
+for chain in lexical_chains:
+	bigword = chain.mfword()
+	for i in range(len(line_list)):
+		line=line_list[i]
+		if line.find(' '+str(bigword)+' ')!=-1 or line.find(' '+str(bigword)+'.')!=-1:
+			if line_flags[i]==0:
+				summary.append(line)
+				line_flags[i] = 1
+				break
+	if(len(summary)==n):
+		break			
+
+
+print summary
