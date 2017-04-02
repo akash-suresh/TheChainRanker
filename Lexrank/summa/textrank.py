@@ -6,8 +6,8 @@ import sys, getopt
 from summarizer import summarize
 from keywords import keywords
 
-#sys.path.append('../../LexChain')
-#from Boochain import LexicalChain
+sys.path.append('../../LexChain')
+from Boochain import LexicalChain
 
 # Types of summarization
 SENTENCE = 0
@@ -60,8 +60,9 @@ def usage():
     print help_text
 
 
-def textrank(text, summarize_by=SENTENCE, ratio=0.2, words=None):
-    #namscores = LexicalChain()
+def textrank(text, path, summarize_by=SENTENCE, ratio=0.2, words=None):
+    namscores = LexicalChain(fileName=path)
+    print namscores
     if summarize_by == SENTENCE:
         return summarize(text, ratio, words)
     else:
@@ -74,7 +75,7 @@ def main():
     with open(path) as file:
         text = file.read()
 
-    print textrank(text, summarize_by, ratio, words)
+    print textrank(text, path, summarize_by, ratio, words)
 
 
 if __name__ == "__main__":

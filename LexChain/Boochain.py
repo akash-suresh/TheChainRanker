@@ -188,4 +188,4 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 	#print final_summary
 	return namscores
 
-print LexicalChain(verbose=1)
+#print LexicalChain(verbose=1)
