@@ -1,6 +1,6 @@
 
 from math import log10 as _log10
-from pagerank_weighted import pagerank_weighted_scipy as _pagerank
+from pagerank_weighted import pagerank_weighted as _pagerank
 from preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
 from commons import build_graph as _build_graph
 from commons import remove_unreachable_nodes as _remove_unreachable_nodes
@@ -95,6 +95,8 @@ def summarize(text, ratio=0.2, words=None, language="english", split=False, scor
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = _build_graph([sentence.token for sentence in sentences])
     _set_graph_edge_weights(graph)
+
+    print '\nSudo', graph.nodes() , '\n'
 
     # Remove all nodes with all edges weights equal to zero.
     _remove_unreachable_nodes(graph)

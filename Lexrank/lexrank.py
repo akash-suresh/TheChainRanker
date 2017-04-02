@@ -1,4 +1,6 @@
-from summa import summarizer
+
+
+from summa.summarizer import summarize
 
 
 fileName = "amazon.txt"
@@ -6,6 +8,8 @@ File = open(fileName) #open file
 lines = File.read()
 
 
-summary = summarizer.summarize(lines)
+summary = summarize(lines)
 
 print summary
+
+

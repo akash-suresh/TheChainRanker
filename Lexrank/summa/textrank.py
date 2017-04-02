@@ -1,4 +1,7 @@
 #!/usr/bin/env python -W ignore::DeprecationWarning
+import sys
+sys.path.append('/home/sudarshan/Desktop/TheChainRanker/Lexrank')
+
 
 import sys, getopt
 from summarizer import summarize
@@ -16,7 +19,7 @@ def get_arguments():
         print str(err)
         usage()
         sys.exit(2)
-    path = None
+    path = '../amazon.txt'
     summarize_by = SENTENCE
     ratio = 0.2
     words = None
