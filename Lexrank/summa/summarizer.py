@@ -92,11 +92,11 @@ def summarize(text, ratio=0.2, words=None, language="english", split=False, scor
     # Gets a list of processed sentences.
     sentences = _clean_text_by_sentences(text, language)
 
+    namscores=[]
+
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = _build_graph([sentence.token for sentence in sentences])
     _set_graph_edge_weights(graph)
-
-    print '\nSudo', graph.nodes() , '\n'
 
     # Remove all nodes with all edges weights equal to zero.
     _remove_unreachable_nodes(graph)

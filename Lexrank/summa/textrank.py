@@ -2,10 +2,12 @@
 import sys
 sys.path.append('../')
 
-
 import sys, getopt
 from summarizer import summarize
 from keywords import keywords
+
+#sys.path.append('../../LexChain')
+#from Boochain import LexicalChain
 
 # Types of summarization
 SENTENCE = 0
@@ -59,6 +61,7 @@ def usage():
 
 
 def textrank(text, summarize_by=SENTENCE, ratio=0.2, words=None):
+    #namscores = LexicalChain()
     if summarize_by == SENTENCE:
         return summarize(text, ratio, words)
     else:
