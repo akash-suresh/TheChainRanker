@@ -1,6 +1,6 @@
 
 from math import log10 as _log10
-from pagerank_weighted import pagerank_weighted as _pagerank
+from pagerank_weighted import pagerank_weighted_scipy as _pagerank
 from preprocessing.textcleaner import clean_text_by_sentences as _clean_text_by_sentences
 from commons import build_graph as _build_graph
 from commons import remove_unreachable_nodes as _remove_unreachable_nodes
