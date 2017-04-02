@@ -1,7 +1,8 @@
 import nltk
 from nltk.corpus import wordnet as wn
 from nltk.corpus import wordnet_ic
- 
+import re
+
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -12,6 +13,10 @@ pathTeshold = 0.1 #path
 brown_ic = wordnet_ic.ic('ic-brown.dat') #load the brown corpus
 lexical_chains = [] #empty list to hold all the chains
 dictionary = {} #empty dictionart to hold the count of each word encountered
+
+
+def findWholeWord(w):
+	return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 
 #class Chain 
 class Chain(): 
@@ -39,13 +44,13 @@ class Chain():
     def getSenses(self):
 	   return self.getSenses
 
-	def incCount(self):
+    def incCount(self):
 		self.count += 1
 
-	def setScore(self, sc):
+    def setScore(self, sc):
 		self.score = sc
 
-	def mfword(self):
+    def mfword(self):
 		maxfreq = 0
 		for word in self.getWords():
 			if dictionary[word] > maxfreq:
@@ -81,10 +86,14 @@ def add_word(word):
 		    
     lexical_chains.append(Chain([word], wn.synsets(word)))
 
-
+def count_words(summary):
+	count = 0
+	for line in summary:
+		count = count + len(line.split(' '))
+	return count
 #fileName = raw_input("Enter file path + name, if file name is 'nlp.txt', type 'nlp' \n \n")
 #n = raw_input("Enter number of sentences in summary.\n")
-n = 15
+word_count=100
 fileName = "amazon.txt"
 print ("\n\n")
 #fileName = "nlp.txt"
@@ -116,7 +125,7 @@ for chain in lexical_chains:
 	#print 'Score =' + str(score)
 	chain.setScore(score)
 
-print 'Sorted start'
+print 'Sorted start '
 lexical_chains.sort(key=lambda x: x.score, reverse=True)
 
 for chain in lexical_chains:
@@ -127,21 +136,41 @@ for chain in lexical_chains:
 
 summary = []
 line_flags = []
+line_score=[]
 
 for line in line_list:
 	line_flags.append(0)
+	line_score.append(0)
 
 for chain in lexical_chains:
 	bigword = chain.mfword()
+	chain_score = chain.score
+	print '\nMF word ', bigword
 	for i in range(len(line_list)):
 		line=line_list[i]
-		if line.find(' '+str(bigword)+' ')!=-1 or line.find(' '+str(bigword)+'.')!=-1:
+		if findWholeWord(bigword)(line)!=None:
+			#((line.find(' '+str(bigword)+' ')!=-1) or (line.find(' '+str(bigword)+'.')!=-1)):
 			if line_flags[i]==0:
 				summary.append(line)
+				#print 'i  ', count_words(summary)
 				line_flags[i] = 1
+				line_score[i] = chain_score
+				#print 'line_score ', line_score
+				#print 'line_flags ', line_flags
+
 				break
-	if(len(summary)==n):
+			elif line_flags[i]==1:
+				line_score[i] = line_score[i] + chain.score
+				#print '\nline_score ', line_score
+				#print 'line_flags ', line_flags
+		
+
+'''
+	if(count_words(summary)>word_count):
 		break			
-
-
+'''
 print summary
+print line_score
+
+final_summary = ' '.join(summary)
+#print final_summary
