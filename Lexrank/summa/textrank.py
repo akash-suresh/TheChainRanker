@@ -62,9 +62,9 @@ def usage():
 
 def textrank(text, path, summarize_by=SENTENCE, ratio=0.2, words=None):
     namscores = LexicalChain(fileName=path)
-    print namscores
+    #print namscores
     if summarize_by == SENTENCE:
-        return summarize(text, ratio, words)
+        return summarize(text, namscores, ratio, words)
     else:
         return keywords(text, ratio, words)
 

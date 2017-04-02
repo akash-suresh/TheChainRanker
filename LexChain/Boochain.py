@@ -104,10 +104,10 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 	File = open(fileName) #open file
 	lines = File.read() #read all lines
 	#dec_lines =  [line.decode('utf-8') for line in lines] 
+	#print [clean_line.token for clean_line in clean_lines]
 
-	line_list = lines.split('. ')
 	clean_lines = clean(lines)
-
+	line_list = [clean_line.text for clean_line in clean_lines]
 	is_noun = lambda x: True if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS') else False
 	nouns = [word for (word, pos) in nltk.pos_tag(nltk.word_tokenize(lines)) if is_noun(pos)]  #extract all nouns
 
@@ -149,34 +149,43 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 		line_score.append(0)
 
 	for chain in lexical_chains:
-		if chain.score>0.0:
-			bigword = chain.mfword()
-			chain_score = chain.score
-			#print '\nMF word ', bigword
-			for i in range(len(line_list)):
-				line=line_list[i]
-				if findWholeWord(bigword)(line)!=None:
-					#((line.find(' '+str(bigword)+' ')!=-1) or (line.find(' '+str(bigword)+'.')!=-1)):
-					if line_flags[i]==0:
-						#summary.append(line)
-						#print 'i  ', count_words(summary)
-						line_flags[i] = 1
-						line_score[i] = chain_score
-						#print 'line_score ', line_score
-						#print 'line_flags ', line_flags
+	
+		bigword = chain.mfword()
+		chain_score = chain.score
+		#print '\nMF word ', bigword
+		for i in range(len(line_list)):
+			line=line_list[i]
+			if findWholeWord(bigword)(line)!=None:
+				#((line.find(' '+str(bigword)+' ')!=-1) or (line.find(' '+str(bigword)+'.')!=-1)):
+				if line_flags[i]==0:
+					#summary.append(line)
+					#print 'i  ', count_words(summary)
+					line_flags[i] = 1
+					line_score[i] = chain_score
+					#print 'line_score ', line_score
+					#print 'line_flags ', line_flags
 
-						break
-					elif line_flags[i]==1:
-						line_score[i] = line_score[i] + chain.score
-						#print '\nline_score ', line_score
-						#print 'line_flags ', line_flags
-				
+					break
+				#elif line_flags[i]==1:
+					#line_score[i] = line_score[i] + chain.score
+					#print '\nline_score ', line_score
+					#print 'line_flags ', line_flags
+			
 
 	'''
 		if(count_words(summary)>word_count):
 			break			
 
 	'''
+	tot_score = 0
+	for i in range(len(line_score)):
+		line_score[i] = line_score[i]+1
+
+	for score in line_score:		
+		tot_score = tot_score + score
+
+	for i in range(len(line_score)):
+		line_score[i] = line_score[i]/tot_score
 
 	namscores = dict(zip([sentence.token for sentence in clean_lines],line_score))
 
