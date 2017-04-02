@@ -1,6 +1,6 @@
 #!/usr/bin/env python -W ignore::DeprecationWarning
 import sys
-sys.path.append('/home/sudarshan/Desktop/TheChainRanker/Lexrank')
+sys.path.append('../')
 
 
 import sys, getopt
