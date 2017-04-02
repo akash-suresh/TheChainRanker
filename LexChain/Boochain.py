@@ -93,7 +93,7 @@ def count_words(summary):
 	return count
 #fileName = raw_input("Enter file path + name, if file name is 'nlp.txt', type 'nlp' \n \n")
 #n = raw_input("Enter number of sentences in summary.\n")
-word_count=100
+word_count=50
 fileName = "amazon.txt"
 print ("\n\n")
 #fileName = "nlp.txt"
@@ -151,7 +151,7 @@ for chain in lexical_chains:
 		if findWholeWord(bigword)(line)!=None:
 			#((line.find(' '+str(bigword)+' ')!=-1) or (line.find(' '+str(bigword)+'.')!=-1)):
 			if line_flags[i]==0:
-				summary.append(line)
+				#summary.append(line)
 				#print 'i  ', count_words(summary)
 				line_flags[i] = 1
 				line_score[i] = chain_score
@@ -169,7 +169,8 @@ for chain in lexical_chains:
 	if(count_words(summary)>word_count):
 		break			
 '''
-print summary
+
+print len(summary)
 print line_score
 
 final_summary = ' '.join(summary)
