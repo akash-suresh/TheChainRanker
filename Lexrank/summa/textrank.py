@@ -25,6 +25,9 @@ def get_arguments():
     summarize_by = SENTENCE
     ratio = 0.2
     words = None
+
+    original = 1
+    
     for o, a in opts:
         if o in ("-t", "--text"):
             path = a
@@ -40,7 +43,7 @@ def get_arguments():
         else:
             assert False, "unhandled option"
 
-    return path, summarize_by, ratio, words
+    return path, summarize_by, ratio, original, words
 
 
 help_text = """Usage: python textrank.py -t FILE
@@ -51,6 +54,8 @@ help_text = """Usage: python textrank.py -t FILE
 \tPATH to text to summarize
 -r RATIO, --ratio=RATIO:
 \tFloat number (0,1] that defines the length of the summary. It's a proportion of the original text. Default value: 0.2.
+-o ORIGINAL, --original=ORIGINAL:
+\tDetermines whether to run with LexChains : 1 - without lexchain, 2 -with lexchain
 -w WORDS, --words=WORDS:
 \tNumber to limit the length of the summary. The length option is ignored if the word limit is set.
 -h, --help:
@@ -60,22 +65,27 @@ def usage():
     print help_text
 
 
-def textrank(text, path, summarize_by=SENTENCE, ratio=0.2, words=None):
-    namscores = LexicalChain(fileName=path)
+def textrank(text, path, original=1, summarize_by=SENTENCE, ratio=0.2, words=None):
+    
+    if original==2:
+        print 'with lexchain'
+        namscores = LexicalChain(fileName=path)
+    else:
+        namscores = []
     #print namscores
     if summarize_by == SENTENCE:
-        return summarize(text, namscores, ratio, words)
+        return summarize(text, namscores, original, ratio, words)
     else:
         return keywords(text, ratio, words)
 
 
 def main():
-    path, summarize_by, ratio, words = get_arguments()
+    path, summarize_by, ratio, original, words = get_arguments()
 
     with open(path) as file:
         text = file.read()
 
-    print textrank(text, path, summarize_by, ratio, words)
+    print textrank(text, path, original, summarize_by, ratio, words)
 
 
 if __name__ == "__main__":

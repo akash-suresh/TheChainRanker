@@ -14,21 +14,22 @@ CONVERGENCE_THRESHOLD = 0.0001
 
 
 
-def pagerank_weighted(graph, namscores, initial_value=None, damping=0.85):
+def pagerank_weighted(graph, namscores, original, initial_value=None, damping=0.85):
     """Calculates PageRank for an undirected graph"""
     #print namscores
-    '''
-    if initial_value == None: initial_value = 1.0 / len(graph.nodes())
-    scores = dict.fromkeys(graph.nodes(), initial_value)
-    '''
-    #print graph.nodes()
-    score_list=[]
-    for i in graph.nodes():
-        score_list.append(namscores[i])
-
-    scores = dict(zip(graph.nodes(),score_list))
-    #print 'Built scores ', scores
     
+    if original==1:
+        if initial_value == None: initial_value = 1.0 / len(graph.nodes())
+        scores = dict.fromkeys(graph.nodes(), initial_value)
+       
+    else:
+        score_list=[]
+        for i in graph.nodes():
+            score_list.append(namscores[i])
+
+        scores = dict(zip(graph.nodes(),score_list))
+        #print 'Built scores ', scores
+
     
     iteration_quantity = 0
     for iteration_number in xrange(100):
