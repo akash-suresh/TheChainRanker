@@ -1,11 +1,13 @@
 #!/usr/bin/env python -W ignore::DeprecationWarning
 import sys
-sys.path.append('/home/sudarshan/Desktop/TheChainRanker/Lexrank')
-
+sys.path.append('../')
 
 import sys, getopt
 from summarizer import summarize
 from keywords import keywords
+
+sys.path.append('../../LexChain')
+from Boochain import LexicalChain
 
 # Types of summarization
 SENTENCE = 0
@@ -58,9 +60,11 @@ def usage():
     print help_text
 
 
-def textrank(text, summarize_by=SENTENCE, ratio=0.2, words=None):
+def textrank(text, path, summarize_by=SENTENCE, ratio=0.2, words=None):
+    namscores = LexicalChain(fileName=path)
+    #print namscores
     if summarize_by == SENTENCE:
-        return summarize(text, ratio, words)
+        return summarize(text, namscores, ratio, words)
     else:
         return keywords(text, ratio, words)
 
@@ -71,7 +75,7 @@ def main():
     with open(path) as file:
         text = file.read()
 
-    print textrank(text, summarize_by, ratio, words)
+    print textrank(text, path, summarize_by, ratio, words)
 
 
 if __name__ == "__main__":
