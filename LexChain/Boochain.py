@@ -16,7 +16,7 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 
 	def findWholeWord(w):
 		return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
-
+		
 	#class Chain 
 	class Chain(): 
 	    def __init__(self, words, senses, count = 0):
@@ -132,7 +132,7 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 
 	#print 'Sorted start '
 	lexical_chains.sort(key=lambda x: x.score, reverse=True)
-
+	verbose=1
 	if verbose==1:
 		for chain in lexical_chains:
 			if(chain.score>0.0):
@@ -155,7 +155,12 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 		#print '\nMF word ', bigword
 		for i in range(len(line_list)):
 			line=line_list[i]
-			if findWholeWord(bigword)(line)!=None:
+			try:
+				x = findWholeWord(bigword)(line) 
+			except:
+				#print 'Exception : Error in finding word'
+				x = None
+			if x!=None:
 				#((line.find(' '+str(bigword)+' ')!=-1) or (line.find(' '+str(bigword)+'.')!=-1)):
 				if line_flags[i]==0:
 					#summary.append(line)
@@ -177,15 +182,18 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 			break			
 
 	'''
+	bias = 20
 	tot_score = 0
 	for i in range(len(line_score)):
-		line_score[i] = line_score[i]+1
+		line_score[i] = (line_score[i]*bias)+1
 
 	for score in line_score:		
 		tot_score = tot_score + score
 
 	for i in range(len(line_score)):
-		line_score[i] = line_score[i]/tot_score
+		line_score[i] = (line_score[i]/tot_score)
+
+	print line_score
 
 	namscores = dict(zip([sentence.token for sentence in clean_lines],line_score))
 
