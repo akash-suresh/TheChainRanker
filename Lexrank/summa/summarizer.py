@@ -88,9 +88,11 @@ def _extract_most_important_sentences(sentences, ratio, words):
         return _get_sentences_with_word_count(sentences, words)
 
 
-def summarize(text, ratio=0.2, words=None, language="english", split=False, scores=False):
+def summarize(text, namscores, ratio=0.2, words=None, language="english", split=False, scores=False):
     # Gets a list of processed sentences.
     sentences = _clean_text_by_sentences(text, language)
+
+    #print namscores
 
     # Creates the graph and calculates the similarity coefficient for every pair of nodes.
     graph = _build_graph([sentence.token for sentence in sentences])
@@ -100,7 +102,9 @@ def summarize(text, ratio=0.2, words=None, language="english", split=False, scor
     _remove_unreachable_nodes(graph)
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
-    pagerank_scores = _pagerank(graph)
+    pagerank_scores = _pagerank(graph, namscores)
+
+    #print pagerank_scores
 
     # Adds the summa scores to the sentence objects.
     _add_scores_to_sentences(sentences, pagerank_scores)
