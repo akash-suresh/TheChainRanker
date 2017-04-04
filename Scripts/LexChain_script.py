@@ -1,43 +1,28 @@
+import sys
 
-# coding: utf-8
+sys.path.append('../LexChain')
 
-# In[71]:
+from Boochain import LexicalChain
 
-def generate(filename,counter):
-    f = open(filename,'r')
-    text = f.read()
-    a = text.split('\nIntroduction:\n')
-    data = a[1]
-    summary = a[0][10:]
-    #print 'data', data
-    text_file = open('Data/data_'+str(counter)+'.txt', "w")
-    text_file.write(data)
-    text_file.close()
-    #print 'summary', summary
+
+def summarize(filename,option):
+    LexicalChain(os.getcwd()+'/../filename')
+
     text_file = open('Golden_summary/summary_'+str(counter)+'.txt', "w")
     text_file.write(summary)
     text_file.close()
     return
 
 
-# In[72]:
-
 import os
+
 counter = 1
-for filename in os.listdir(os.getcwd()):
+
+for filename in os.listdir(os.getcwd()+'/../Raw_text/'):
     if 'txt' in filename:
         print filename
-        generate(filename,counter)
+        option = 'lexchain'
+        #summarize(filename,option)
         counter = counter + 1
 print counter
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
 
