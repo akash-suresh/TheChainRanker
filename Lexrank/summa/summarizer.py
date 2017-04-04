@@ -88,7 +88,7 @@ def _extract_most_important_sentences(sentences, ratio, words):
         return _get_sentences_with_word_count(sentences, words)
 
 
-def summarize(text, namscores, original=1, ratio=0.2, words=None, language="english", split=False, scores=False):
+def summarize(text, namscores, original='pagerank', ratio=0.2, words=None, language="english", split=False, scores=False):
     # Gets a list of processed sentences.
     sentences = _clean_text_by_sentences(text, language)
 
@@ -103,18 +103,19 @@ def summarize(text, namscores, original=1, ratio=0.2, words=None, language="engl
 
     # Ranks the tokens using the PageRank algorithm. Returns dict of sentence -> score
     pgrank_scores = _pagerank(graph, namscores, original)
-    '''
-    print '\n\npagerank scores\n',pgrank_scores
-    print '\n\nnamscores\n',namscores
-
-    suraj_scores=[]
-    for i in graph.nodes():
-        suraj_scores.append((pgrank_scores[i])*(namscores[i]))
-
-    new_scores = dict(zip(graph.nodes(),suraj_scores))
-    print '\n\nhosa scores\n',new_scores
-    '''
+    
     pagerank_scores = pgrank_scores
+    #print '\n\npagerank scores\n',pgrank_scores
+    #print '\n\nnamscores\n',namscores
+    if original=='suraj':
+        suraj_scores=[]
+        for i in graph.nodes():
+            suraj_scores.append((pgrank_scores[i])*(namscores[i]))
+
+        pagerank_scores = dict(zip(graph.nodes(),suraj_scores))
+    #print '\n\nhosa scores\n',new_scores
+    
+    
     # Adds the summa scores to the sentence objects.
     _add_scores_to_sentences(sentences, pagerank_scores)
 

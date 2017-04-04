@@ -8,11 +8,11 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 sys.path.append('../Lexrank')
 
-#from summa.preprocessing.textcleaner import clean_text_by_sentences as clean
+from summa.preprocessing.textcleaner import clean_text_by_sentences as clean
 
 
 def LexicalChain(fileName="amazon.txt", verbose=0):
-	'''
+	
 	def findWholeWord(w):
 		return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 		
@@ -175,13 +175,13 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 					#print '\nline_score ', line_score
 					#print 'line_flags ', line_flags
 			
-	'''
+	
 	'''
 		if(count_words(summary)>word_count):
 			break			
 
 	'''
-	'''
+	
 	bias = 20
 	tot_score = 0
 	for i in range(len(line_score)):
