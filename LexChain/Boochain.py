@@ -13,7 +13,6 @@ from summa.preprocessing.textcleaner import clean_text_by_sentences as clean
 
 def LexicalChain(fileName="amazon.txt", verbose=0):
 
-
 	def findWholeWord(w):
 		return re.compile(r'\b({0})\b'.format(w), flags=re.IGNORECASE).search
 		
