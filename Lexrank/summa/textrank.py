@@ -65,9 +65,13 @@ def usage():
     print help_text
 
 
-def textrank(text, path, original=1, summarize_by=SENTENCE, ratio=0.2, words=None):
+def textrank(fileName, original='pagerank', summarize_by=SENTENCE, ratio=0.2, words=None):
     
-    if original==2:
+    path = '../Raw_text/'+fileName
+    File = open(path) #open file
+    text = File.read() #read all lines
+
+    if original=='suraj':
         print 'with lexchain'
         namscores = LexicalChain(fileName=path)
     else:
