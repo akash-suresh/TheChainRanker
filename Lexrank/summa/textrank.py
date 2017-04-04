@@ -6,7 +6,7 @@ import sys, getopt
 from summarizer import summarize
 from keywords import keywords
 
-sys.path.append('../LexChain')
+#sys.path.append('../LexChain')
 from Boochain import LexicalChain
 
 # Types of summarization

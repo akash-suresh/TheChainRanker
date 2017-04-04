@@ -1,9 +1,8 @@
 import sys
 
-sys.path.append('../')
+sys.path.append('../Lexrank/summa/')
 
-from LexChain.Boochain import LexicalChain
-from Lexrank.summa.textrank import textrank
+from textrank import textrank
 
 
 def summarize(filename,option):
