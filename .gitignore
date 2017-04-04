@@ -1,1 +1,4 @@
-*.pyc
+Lexrank/*.pyc
+Lexrank/summa/*.pyc
+Lexrank/summa/preprocessing/*.pyc
+LexChain/*.pyc
