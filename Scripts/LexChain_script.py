@@ -1,13 +1,14 @@
 import sys
 
-sys.path.append('../LexChain')
+sys.path.append('../')
 
-from Boochain import LexicalChain
+from LexChain.Boochain import LexicalChain
+from Lexrank.summa.textrank import textrank
 
 
 def summarize(filename,option):
-    LexicalChain(os.getcwd()+'/../filename')
-
+    #LexicalChain(os.getcwd()+'/../filename')
+    summary = textrank(filename,original=1,words=100)
     text_file = open('Golden_summary/summary_'+str(counter)+'.txt', "w")
     text_file.write(summary)
     text_file.close()
