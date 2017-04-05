@@ -6,7 +6,7 @@ import sys, getopt
 from summarizer import summarize
 from keywords import keywords
 
-sys.path.append('../LexChain')
+#sys.path.append('../LexChain')
 from Boochain import LexicalChain
 
 # Types of summarization
@@ -72,7 +72,7 @@ def textrank(fileName, original='pagerank', summarize_by=SENTENCE, ratio=0.2, wo
     text = File.read() #read all lines
 
     if original=='suraj':
-        print 'with lexchain'
+        #print 'with lexchain'
         namscores = LexicalChain(fileName=path)
     else:
         namscores = []

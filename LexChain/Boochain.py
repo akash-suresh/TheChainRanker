@@ -204,6 +204,5 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 	#final_summary = ' '.join(summary)
 	#print final_summary
 	return namscores
-	'''
-	return
+	
 #print LexicalChain(verbose=1)
