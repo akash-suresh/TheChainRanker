@@ -17,8 +17,12 @@ CONVERGENCE_THRESHOLD = 0.0001
 def pagerank_weighted(graph, namscores, original, initial_value=None, damping=0.85):
     """Calculates PageRank for an undirected graph"""
     #print namscores
-    if True=True:
-        if initial_value == None: initial_value = 1.0 / len(graph.nodes())
+    if True==True:
+        try:
+            if initial_value == None: initial_value = 1.0 / len(graph.nodes())
+        except ZeroDivisionError:
+            initial_value = 0.000001
+            print graph.nodes()
         scores = dict.fromkeys(graph.nodes(), initial_value)
     '''   
     else:
