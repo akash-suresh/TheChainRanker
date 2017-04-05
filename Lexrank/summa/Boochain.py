@@ -131,7 +131,7 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 
 	#print 'Sorted start '
 	lexical_chains.sort(key=lambda x: x.score, reverse=True)
-	verbose=1
+	#verbose=1
 	if verbose==1:
 		for chain in lexical_chains:
 			if(chain.score>0.0):
@@ -193,7 +193,7 @@ def LexicalChain(fileName="amazon.txt", verbose=0):
 	for i in range(len(line_score)):
 		line_score[i] = (line_score[i]/tot_score)
 
-	print line_score
+	#print line_score
 
 	namscores = dict(zip([sentence.token for sentence in clean_lines],line_score))
 
